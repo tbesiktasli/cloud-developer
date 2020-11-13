@@ -10,10 +10,10 @@ export const config = {
     "aws_media_bucket": process.env.AWS_MEDIA_BUCKET
   },
   "prod": {
-    "username": "",
-    "password": "",
-    "database": "udagram_prod",
-    "host": "",
+    "username": process.env.POSTGRES_USERNAME,
+    "password": process.env.POSTGRES_PASSWORD,
+    "database": process.env.POSTGRES_DBNAME,
+    "host": process.env.POSTGRES_HOST,
     "dialect": "postgres"
   }
 }

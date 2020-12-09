@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -29,20 +30,23 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  app.get( "/filteredimage", async ( req, res ) => {
+  app.get( "/filteredimage", async ( req: Request, res: Response ) => {
 
-    let imageURL = req.query.image_url;
+    let imageURL:string = req.query.image_url;
 
     if (!imageURL) {
       return res.status(400).send({ message: 'Please provide a publicly accessible image url' });
     }
 
-    let filteredImagePath = await filterImageFromURL(imageURL);
+    let filteredImagePath:string = await filterImageFromURL(imageURL);
 
-    res.sendFile(filteredImagePath);
+    res.status(200).sendFile(filteredImagePath);
 
-    res.on('finish', function() {
-      deleteLocalFiles([filteredImagePath]);
+    let files:Array<string> = [];
+    files.push(filteredImagePath)
+
+    res.on('finish', () => {
+      deleteLocalFiles(files);
     });
 
   } );
